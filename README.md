@@ -1,1 +1,1 @@
-# definitely-typed-tinkoff-invest-api-v2-js-rest-sdk
+# definitely-typed-tinkoff-invest-api-v2-js-rest
