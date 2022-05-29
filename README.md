@@ -1,0 +1,1 @@
+# types-tinkoff-invest-api-v2-js-rest-sdk
