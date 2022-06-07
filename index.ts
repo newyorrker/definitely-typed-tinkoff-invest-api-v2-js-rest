@@ -96,38 +96,3 @@ download("https://github.com/Tinkoff/investAPI/archive/refs/heads/release/1.0.8.
         console.error(e);
     }
 })
-
-const styles = {
-
-}
-
-
-const statusParams: StatusParams = {
-    completed: {
-        className: styles["green"],
-        description: "Завершена",
-    },
-    cancelled_by_patient: {
-        className: styles["red"],
-        description: "Отменена клиентом",
-    },
-    cancelled_by_therapist: {
-        className: styles["red"],
-        description: "Отменена вами",
-    },
-    patient_not_came: {
-        className: styles["grey"],
-        description: "Клиент не вошёл",
-    },
-    therapist_not_came: {
-        className: styles["grey"],
-        description: "Вы не вошли",
-    },
-};
-
-interface Status {
-    className: string;
-    description: string;
-}
-
-type StatusParams = Record<string, Status>
