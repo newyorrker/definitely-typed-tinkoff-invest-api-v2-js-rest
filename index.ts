@@ -1,26 +1,21 @@
-
-//скачать .proto из gh
-
-const execa = require('execa');
-
-const { https } = require('follow-redirects');
-const extract = require('extract-zip')
-const fs = require('fs');
-const path = require('path')
-const fsExtra = require("fs-extra");
+import { execa } from 'execa';
+import { https } from "follow-redirects";
+import extract from "extract-zip";
+import path from "path";
+import fsExtra from "fs-extra";
 
 
 
 function download(url, dest, cb) {
-    const file = fs.createWriteStream(dest);
+    const file = fsExtra.createWriteStream(dest);
 
-    const request = https.get(url, function (response) {
+    https.get(url, function (response) {
         response.pipe(file);
         file.on('finish', function () {
             file.close(cb);  // close() is async, call cb after close completes.
         });
     }).on('error', function (err) { // Handle errors
-        fs.unlink(dest); // Delete the file async. (But we don't check the result)
+        fsExtra.unlink(dest); // Delete the file async. (But we don't check the result)
         if (cb) cb(err.message);
     });
 };
@@ -101,3 +96,38 @@ download("https://github.com/Tinkoff/investAPI/archive/refs/heads/release/1.0.8.
         console.error(e);
     }
 })
+
+const styles = {
+
+}
+
+
+const statusParams: StatusParams = {
+    completed: {
+        className: styles["green"],
+        description: "Завершена",
+    },
+    cancelled_by_patient: {
+        className: styles["red"],
+        description: "Отменена клиентом",
+    },
+    cancelled_by_therapist: {
+        className: styles["red"],
+        description: "Отменена вами",
+    },
+    patient_not_came: {
+        className: styles["grey"],
+        description: "Клиент не вошёл",
+    },
+    therapist_not_came: {
+        className: styles["grey"],
+        description: "Вы не вошли",
+    },
+};
+
+interface Status {
+    className: string;
+    description: string;
+}
+
+type StatusParams = Record<string, Status>
