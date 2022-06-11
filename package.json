@@ -1,6 +1,6 @@
 {
   "name": "tinkoff-invest-api-v2-types",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "It is generated types from [tinkoff api v2 proto contracts](https://github.com/Tinkoff/investAPI/tree/main/src/docs/contracts)",
   "main": "index.js",
   "dependencies": {
