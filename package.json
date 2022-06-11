@@ -1,8 +1,9 @@
 {
   "name": "tinkoff-invest-api-v2-types",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "It is generated types from [tinkoff api v2 proto contracts](https://github.com/Tinkoff/investAPI/tree/main/src/docs/contracts)",
-  "main": "index.js",
+  "main": "",
+  "types": "index.ts",
   "devDependencies": {
     "@types/follow-redirects": "^1.14.1",
     "@types/fs-extra": "^9.0.13",
