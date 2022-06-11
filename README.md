@@ -14,6 +14,6 @@ Just install npm package `npm i tinkoff-invest-api-v2-types`
 
 How to update the version?
 ----
-You need to clone this repository, set the [version of tinkoff api](https://github.com/Tinkoff/investAPI/branches) which you want in .enc.local. Like this: `API_VERSION=1.0.8`.
+You need to clone this repository, set the [version of tinkoff api](https://github.com/Tinkoff/investAPI/branches) which you want in .env. Like this: `API_VERSION=1.0.8`.
 
 After you must run the command `npm run build`, commit changes and make a pull request. ✅
