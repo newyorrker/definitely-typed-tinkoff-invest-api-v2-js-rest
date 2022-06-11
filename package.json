@@ -1,7 +1,7 @@
 {
   "name": "tinkoff-invest-api-v2-types",
-  "version": "0.0.1",
-  "description": "",
+  "version": "1.0.0",
+  "description": "It is generated types from [tinkoff api v2 proto contracts](https://github.com/Tinkoff/investAPI/tree/main/src/docs/contracts)",
   "main": "index.js",
   "dependencies": {
     "@types/follow-redirects": "^1.14.1",
@@ -24,15 +24,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/newyorrker/definitely-typed-tinkoff-invest-api-v2-js-rest.git"
+    "url": "git+https://github.com/newyorrker/tinkoff-invest-api-v2-types.git"
   },
   "keywords": [
     "ts"
   ],
   "author": "newyorrker",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/newyorrker/definitely-typed-tinkoff-invest-api-v2-js-rest/issues"
+    "url": "https://github.com/newyorrker/tinkoff-invest-api-v2-types/issues"
   },
-  "homepage": "https://github.com/newyorrker/definitely-typed-tinkoff-invest-api-v2-js-rest#readme"
+  "homepage": "https://github.com/newyorrker/tinkoff-invest-api-v2-types#readme"
 }
