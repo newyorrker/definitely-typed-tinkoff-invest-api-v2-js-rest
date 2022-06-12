@@ -58,11 +58,25 @@ const removeProtoAndFixTs = (fileName: string) => {
         const fileContent = fsExtra.readFileSync(filePath).toString();
 
         //fixing ts files
-        let newContent = "";
+        let newContent = fileContent;
 
-        //fix enum
-        newContent = fileContent.replace(/ = [-][\d]| = [\d]{1,}/g, "");
+        //fixing enums
+        const regexpForEnumSplit = /\n  /gm;
+        const splitedByEnum = fileContent.split(regexpForEnumSplit).filter(string => string.match(/\w{1,}( = [-][\d]| = [\d]{1,})/gm));
 
+        for (let string of splitedByEnum) {
+            //:ENUM_DEFENITION = 1
+            const enumRow = string.match(/\w{1,}( = [-][\d]| = [\d]{1,})/gm);
+
+            //cleared enum row: ENUM_DEFENITION = 1
+            string = string.replace(string, enumRow.toString())
+
+            //only enum defenition: ENUM_DEFENITION
+            const definition = string.replace(/ (.*)/gm, "");
+            newContent = newContent.replace(string, `${definition} = "${definition}"`);
+        }
+
+        //fixing exports/imports
         newContent = newContent.replace('export const protobufPackage = "tinkoff.public.invest.api.contract.v1";', "");
         newContent = newContent.replace('/* eslint-disable */\n', "");
         newContent = newContent.replace('\n\n', '')
