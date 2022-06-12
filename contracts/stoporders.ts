@@ -3,36 +3,36 @@ import type { Quotation, MoneyValue } from "../contracts/common";
 /** Направление сделки стоп-заявки. */
 export enum StopOrderDirection {
   /** STOP_ORDER_DIRECTION_UNSPECIFIED - Значение не указано. */
-  STOP_ORDER_DIRECTION_UNSPECIFIED = 0,
+  STOP_ORDER_DIRECTION_UNSPECIFIED,
   /** STOP_ORDER_DIRECTION_BUY - Покупка. */
-  STOP_ORDER_DIRECTION_BUY = 1,
+  STOP_ORDER_DIRECTION_BUY,
   /** STOP_ORDER_DIRECTION_SELL - Продажа. */
-  STOP_ORDER_DIRECTION_SELL = 2,
-  UNRECOGNIZED = -1,
+  STOP_ORDER_DIRECTION_SELL,
+  UNRECOGNIZED,
 }
 
 /** Тип экспирации стоп-заявке. */
 export enum StopOrderExpirationType {
   /** STOP_ORDER_EXPIRATION_TYPE_UNSPECIFIED - Значение не указано. */
-  STOP_ORDER_EXPIRATION_TYPE_UNSPECIFIED = 0,
+  STOP_ORDER_EXPIRATION_TYPE_UNSPECIFIED,
   /** STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_CANCEL - Действительно до отмены. */
-  STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_CANCEL = 1,
+  STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_CANCEL,
   /** STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_DATE - Действительно до даты снятия. */
-  STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_DATE = 2,
-  UNRECOGNIZED = -1,
+  STOP_ORDER_EXPIRATION_TYPE_GOOD_TILL_DATE,
+  UNRECOGNIZED,
 }
 
 /** Тип стоп-заявки. */
 export enum StopOrderType {
   /** STOP_ORDER_TYPE_UNSPECIFIED - Значение не указано. */
-  STOP_ORDER_TYPE_UNSPECIFIED = 0,
+  STOP_ORDER_TYPE_UNSPECIFIED,
   /** STOP_ORDER_TYPE_TAKE_PROFIT - Take-profit заявка. */
-  STOP_ORDER_TYPE_TAKE_PROFIT = 1,
+  STOP_ORDER_TYPE_TAKE_PROFIT,
   /** STOP_ORDER_TYPE_STOP_LOSS - Stop-loss заявка. */
-  STOP_ORDER_TYPE_STOP_LOSS = 2,
+  STOP_ORDER_TYPE_STOP_LOSS,
   /** STOP_ORDER_TYPE_STOP_LIMIT - Stop-limit заявка. */
-  STOP_ORDER_TYPE_STOP_LIMIT = 3,
-  UNRECOGNIZED = -1,
+  STOP_ORDER_TYPE_STOP_LIMIT,
+  UNRECOGNIZED,
 }
 
 /** Запрос выставления стоп-заявки. */

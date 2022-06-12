@@ -3,40 +3,40 @@ import type { MoneyValue, Quotation } from "../contracts/common";
 /** Тип счёта. */
 export enum AccountType {
   /** ACCOUNT_TYPE_UNSPECIFIED - Тип аккаунта не определён. */
-  ACCOUNT_TYPE_UNSPECIFIED = 0,
+  ACCOUNT_TYPE_UNSPECIFIED,
   /** ACCOUNT_TYPE_TINKOFF - Брокерский счёт Тинькофф. */
-  ACCOUNT_TYPE_TINKOFF = 1,
+  ACCOUNT_TYPE_TINKOFF,
   /** ACCOUNT_TYPE_TINKOFF_IIS - ИИС счёт. */
-  ACCOUNT_TYPE_TINKOFF_IIS = 2,
+  ACCOUNT_TYPE_TINKOFF_IIS,
   /** ACCOUNT_TYPE_INVEST_BOX - Инвесткопилка. */
-  ACCOUNT_TYPE_INVEST_BOX = 3,
-  UNRECOGNIZED = -1,
+  ACCOUNT_TYPE_INVEST_BOX,
+  UNRECOGNIZED,
 }
 
 /** Статус счёта. */
 export enum AccountStatus {
   /** ACCOUNT_STATUS_UNSPECIFIED - Статус счёта не определён. */
-  ACCOUNT_STATUS_UNSPECIFIED = 0,
+  ACCOUNT_STATUS_UNSPECIFIED,
   /** ACCOUNT_STATUS_NEW - Новый, в процессе открытия. */
-  ACCOUNT_STATUS_NEW = 1,
+  ACCOUNT_STATUS_NEW,
   /** ACCOUNT_STATUS_OPEN - Открытый и активный счёт. */
-  ACCOUNT_STATUS_OPEN = 2,
+  ACCOUNT_STATUS_OPEN,
   /** ACCOUNT_STATUS_CLOSED - Закрытый счёт. */
-  ACCOUNT_STATUS_CLOSED = 3,
-  UNRECOGNIZED = -1,
+  ACCOUNT_STATUS_CLOSED,
+  UNRECOGNIZED,
 }
 
 /** Уровень доступа к счёту. */
 export enum AccessLevel {
   /** ACCOUNT_ACCESS_LEVEL_UNSPECIFIED - Уровень доступа не определён. */
-  ACCOUNT_ACCESS_LEVEL_UNSPECIFIED = 0,
+  ACCOUNT_ACCESS_LEVEL_UNSPECIFIED,
   /** ACCOUNT_ACCESS_LEVEL_FULL_ACCESS - Полный доступ к счёту. */
-  ACCOUNT_ACCESS_LEVEL_FULL_ACCESS = 1,
+  ACCOUNT_ACCESS_LEVEL_FULL_ACCESS,
   /** ACCOUNT_ACCESS_LEVEL_READ_ONLY - Доступ с уровнем прав "только чтение". */
-  ACCOUNT_ACCESS_LEVEL_READ_ONLY = 2,
+  ACCOUNT_ACCESS_LEVEL_READ_ONLY,
   /** ACCOUNT_ACCESS_LEVEL_NO_ACCESS - Доступ отсутствует. */
-  ACCOUNT_ACCESS_LEVEL_NO_ACCESS = 3,
-  UNRECOGNIZED = -1,
+  ACCOUNT_ACCESS_LEVEL_NO_ACCESS,
+  UNRECOGNIZED,
 }
 
 /** Запрос получения счетов пользователя. */

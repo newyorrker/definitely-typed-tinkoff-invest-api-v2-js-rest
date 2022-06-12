@@ -59,7 +59,11 @@ const removeProtoAndFixTs = (fileName: string) => {
 
         //fixing ts files
         let newContent = "";
-        newContent = fileContent.replace('export const protobufPackage = "tinkoff.public.invest.api.contract.v1";', "");
+
+        //fix enum
+        newContent = fileContent.replace(/ = [-][\d]| = [\d]{1,}/g, "");
+
+        newContent = newContent.replace('export const protobufPackage = "tinkoff.public.invest.api.contract.v1";', "");
         newContent = newContent.replace('/* eslint-disable */\n', "");
         newContent = newContent.replace('\n\n', '')
         fsExtra.writeFile(filePath, newContent);

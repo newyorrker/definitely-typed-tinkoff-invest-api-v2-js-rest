@@ -8,74 +8,74 @@ import { Observable } from "rxjs";
 /** Тип операции со списком подписок. */
 export enum SubscriptionAction {
   /** SUBSCRIPTION_ACTION_UNSPECIFIED - Статус подписки не определён. */
-  SUBSCRIPTION_ACTION_UNSPECIFIED = 0,
+  SUBSCRIPTION_ACTION_UNSPECIFIED,
   /** SUBSCRIPTION_ACTION_SUBSCRIBE - Подписаться. */
-  SUBSCRIPTION_ACTION_SUBSCRIBE = 1,
+  SUBSCRIPTION_ACTION_SUBSCRIBE,
   /** SUBSCRIPTION_ACTION_UNSUBSCRIBE - Отписаться. */
-  SUBSCRIPTION_ACTION_UNSUBSCRIBE = 2,
-  UNRECOGNIZED = -1,
+  SUBSCRIPTION_ACTION_UNSUBSCRIBE,
+  UNRECOGNIZED,
 }
 
 /** Интервал свечи. */
 export enum SubscriptionInterval {
   /** SUBSCRIPTION_INTERVAL_UNSPECIFIED - Интервал свечи не определён. */
-  SUBSCRIPTION_INTERVAL_UNSPECIFIED = 0,
+  SUBSCRIPTION_INTERVAL_UNSPECIFIED,
   /** SUBSCRIPTION_INTERVAL_ONE_MINUTE - Минутные свечи. */
-  SUBSCRIPTION_INTERVAL_ONE_MINUTE = 1,
+  SUBSCRIPTION_INTERVAL_ONE_MINUTE,
   /** SUBSCRIPTION_INTERVAL_FIVE_MINUTES - Пятиминутные свечи. */
-  SUBSCRIPTION_INTERVAL_FIVE_MINUTES = 2,
-  UNRECOGNIZED = -1,
+  SUBSCRIPTION_INTERVAL_FIVE_MINUTES,
+  UNRECOGNIZED,
 }
 
 /** Результат подписки. */
 export enum SubscriptionStatus {
   /** SUBSCRIPTION_STATUS_UNSPECIFIED - Статус подписки не определён. */
-  SUBSCRIPTION_STATUS_UNSPECIFIED = 0,
+  SUBSCRIPTION_STATUS_UNSPECIFIED,
   /** SUBSCRIPTION_STATUS_SUCCESS - Успешно. */
-  SUBSCRIPTION_STATUS_SUCCESS = 1,
+  SUBSCRIPTION_STATUS_SUCCESS,
   /** SUBSCRIPTION_STATUS_INSTRUMENT_NOT_FOUND - Инструмент не найден. */
-  SUBSCRIPTION_STATUS_INSTRUMENT_NOT_FOUND = 2,
+  SUBSCRIPTION_STATUS_INSTRUMENT_NOT_FOUND,
   /** SUBSCRIPTION_STATUS_SUBSCRIPTION_ACTION_IS_INVALID - Некорректный статус подписки, список возможных значений: [SubscriptionAction](https://tinkoff.github.io/investAPI/marketdata#subscriptionaction). */
-  SUBSCRIPTION_STATUS_SUBSCRIPTION_ACTION_IS_INVALID = 3,
+  SUBSCRIPTION_STATUS_SUBSCRIPTION_ACTION_IS_INVALID,
   /** SUBSCRIPTION_STATUS_DEPTH_IS_INVALID - Некорректная глубина стакана, доступные значения: 1, 10, 20, 30, 40, 50. */
-  SUBSCRIPTION_STATUS_DEPTH_IS_INVALID = 4,
+  SUBSCRIPTION_STATUS_DEPTH_IS_INVALID,
   /** SUBSCRIPTION_STATUS_INTERVAL_IS_INVALID - Некорректный интервал свечей, список возможных значений: [SubscriptionInterval](https://tinkoff.github.io/investAPI/marketdata#subscriptioninterval). */
-  SUBSCRIPTION_STATUS_INTERVAL_IS_INVALID = 5,
+  SUBSCRIPTION_STATUS_INTERVAL_IS_INVALID,
   /** SUBSCRIPTION_STATUS_LIMIT_IS_EXCEEDED - Превышен лимит на общее количество подписок в рамках стрима, подробнее: [Лимитная политика](https://tinkoff.github.io/investAPI/limits/). */
-  SUBSCRIPTION_STATUS_LIMIT_IS_EXCEEDED = 6,
+  SUBSCRIPTION_STATUS_LIMIT_IS_EXCEEDED,
   /** SUBSCRIPTION_STATUS_INTERNAL_ERROR - Внутренняя ошибка сервиса. */
-  SUBSCRIPTION_STATUS_INTERNAL_ERROR = 7,
+  SUBSCRIPTION_STATUS_INTERNAL_ERROR,
   /** SUBSCRIPTION_STATUS_TOO_MANY_REQUESTS - Превышен лимит на количество запросов на подписки в течение установленного отрезка времени */
-  SUBSCRIPTION_STATUS_TOO_MANY_REQUESTS = 8,
-  UNRECOGNIZED = -1,
+  SUBSCRIPTION_STATUS_TOO_MANY_REQUESTS,
+  UNRECOGNIZED,
 }
 
 /** Направление сделки. */
 export enum TradeDirection {
   /** TRADE_DIRECTION_UNSPECIFIED - Направление сделки не определено. */
-  TRADE_DIRECTION_UNSPECIFIED = 0,
+  TRADE_DIRECTION_UNSPECIFIED,
   /** TRADE_DIRECTION_BUY - Покупка. */
-  TRADE_DIRECTION_BUY = 1,
+  TRADE_DIRECTION_BUY,
   /** TRADE_DIRECTION_SELL - Продажа. */
-  TRADE_DIRECTION_SELL = 2,
-  UNRECOGNIZED = -1,
+  TRADE_DIRECTION_SELL,
+  UNRECOGNIZED,
 }
 
 /** Интервал свечей. */
 export enum CandleInterval {
   /** CANDLE_INTERVAL_UNSPECIFIED - Интервал не определён. */
-  CANDLE_INTERVAL_UNSPECIFIED = 0,
+  CANDLE_INTERVAL_UNSPECIFIED,
   /** CANDLE_INTERVAL_1_MIN - 1 минута. */
-  CANDLE_INTERVAL_1_MIN = 1,
+  CANDLE_INTERVAL_1_MIN,
   /** CANDLE_INTERVAL_5_MIN - 5 минут. */
-  CANDLE_INTERVAL_5_MIN = 2,
+  CANDLE_INTERVAL_5_MIN,
   /** CANDLE_INTERVAL_15_MIN - 15 минут. */
-  CANDLE_INTERVAL_15_MIN = 3,
+  CANDLE_INTERVAL_15_MIN,
   /** CANDLE_INTERVAL_HOUR - 1 час. */
-  CANDLE_INTERVAL_HOUR = 4,
+  CANDLE_INTERVAL_HOUR,
   /** CANDLE_INTERVAL_DAY - 1 день. */
-  CANDLE_INTERVAL_DAY = 5,
-  UNRECOGNIZED = -1,
+  CANDLE_INTERVAL_DAY,
+  UNRECOGNIZED,
 }
 
 /** Запрос подписки или отписки на определённые биржевые данные. */
