@@ -7,119 +7,119 @@ import type {
 /** Тип купонов. */
 export enum CouponType {
   /** COUPON_TYPE_UNSPECIFIED - Неопределенное значение */
-  COUPON_TYPE_UNSPECIFIED = 0,
+  COUPON_TYPE_UNSPECIFIED,
   /** COUPON_TYPE_CONSTANT - Постоянный */
-  COUPON_TYPE_CONSTANT = 1,
+  COUPON_TYPE_CONSTANT,
   /** COUPON_TYPE_FLOATING - Плавающий */
-  COUPON_TYPE_FLOATING = 2,
+  COUPON_TYPE_FLOATING,
   /** COUPON_TYPE_DISCOUNT - Дисконт */
-  COUPON_TYPE_DISCOUNT = 3,
+  COUPON_TYPE_DISCOUNT,
   /** COUPON_TYPE_MORTGAGE - Ипотечный */
-  COUPON_TYPE_MORTGAGE = 4,
+  COUPON_TYPE_MORTGAGE,
   /** COUPON_TYPE_FIX - Фиксированный */
-  COUPON_TYPE_FIX = 5,
+  COUPON_TYPE_FIX,
   /** COUPON_TYPE_VARIABLE - Переменный */
-  COUPON_TYPE_VARIABLE = 6,
+  COUPON_TYPE_VARIABLE,
   /** COUPON_TYPE_OTHER - Прочее */
-  COUPON_TYPE_OTHER = 7,
-  UNRECOGNIZED = -1,
+  COUPON_TYPE_OTHER,
+  UNRECOGNIZED,
 }
 
 /** Тип идентификатора инструмента. Подробнее об идентификации инструментов: [Идентификация инструментов](https://tinkoff.github.io/investAPI/faq_identification/) */
 export enum InstrumentIdType {
   /** INSTRUMENT_ID_UNSPECIFIED - Значение не определено. */
-  INSTRUMENT_ID_UNSPECIFIED = 0,
+  INSTRUMENT_ID_UNSPECIFIED,
   /** INSTRUMENT_ID_TYPE_FIGI - Figi. */
-  INSTRUMENT_ID_TYPE_FIGI = 1,
+  INSTRUMENT_ID_TYPE_FIGI,
   /** INSTRUMENT_ID_TYPE_TICKER - Ticker. */
-  INSTRUMENT_ID_TYPE_TICKER = 2,
+  INSTRUMENT_ID_TYPE_TICKER,
   /** INSTRUMENT_ID_TYPE_UID - Уникальный идентификатор. */
-  INSTRUMENT_ID_TYPE_UID = 3,
-  UNRECOGNIZED = -1,
+  INSTRUMENT_ID_TYPE_UID,
+  UNRECOGNIZED,
 }
 
 /** Статус запрашиваемых инструментов. */
 export enum InstrumentStatus {
   /** INSTRUMENT_STATUS_UNSPECIFIED - Значение не определено. */
-  INSTRUMENT_STATUS_UNSPECIFIED = 0,
+  INSTRUMENT_STATUS_UNSPECIFIED,
   /** INSTRUMENT_STATUS_BASE - Базовый список инструментов (по умолчанию). Инструменты доступные для торговли через TINKOFF INVEST API. */
-  INSTRUMENT_STATUS_BASE = 1,
+  INSTRUMENT_STATUS_BASE,
   /** INSTRUMENT_STATUS_ALL - Список всех инструментов. */
-  INSTRUMENT_STATUS_ALL = 2,
-  UNRECOGNIZED = -1,
+  INSTRUMENT_STATUS_ALL,
+  UNRECOGNIZED,
 }
 
 /** Тип акций. */
 export enum ShareType {
   /** SHARE_TYPE_UNSPECIFIED - Значение не определено. */
-  SHARE_TYPE_UNSPECIFIED = 0,
+  SHARE_TYPE_UNSPECIFIED,
   /** SHARE_TYPE_COMMON - Обыкновенная */
-  SHARE_TYPE_COMMON = 1,
+  SHARE_TYPE_COMMON,
   /** SHARE_TYPE_PREFERRED - Привилегированная */
-  SHARE_TYPE_PREFERRED = 2,
+  SHARE_TYPE_PREFERRED,
   /** SHARE_TYPE_ADR - Американские депозитарные расписки */
-  SHARE_TYPE_ADR = 3,
+  SHARE_TYPE_ADR,
   /** SHARE_TYPE_GDR - Глобальные депозитарные расписки */
-  SHARE_TYPE_GDR = 4,
+  SHARE_TYPE_GDR,
   /** SHARE_TYPE_MLP - Товарищество с ограниченной ответственностью */
-  SHARE_TYPE_MLP = 5,
+  SHARE_TYPE_MLP,
   /** SHARE_TYPE_NY_REG_SHRS - Акции из реестра Нью-Йорка */
-  SHARE_TYPE_NY_REG_SHRS = 6,
+  SHARE_TYPE_NY_REG_SHRS,
   /** SHARE_TYPE_CLOSED_END_FUND - Закрытый инвестиционный фонд */
-  SHARE_TYPE_CLOSED_END_FUND = 7,
+  SHARE_TYPE_CLOSED_END_FUND,
   /** SHARE_TYPE_REIT - Траст недвижимости */
-  SHARE_TYPE_REIT = 8,
-  UNRECOGNIZED = -1,
+  SHARE_TYPE_REIT,
+  UNRECOGNIZED,
 }
 
 /** Тип актива. */
 export enum AssetType {
   /** ASSET_TYPE_UNSPECIFIED - Тип не определён. */
-  ASSET_TYPE_UNSPECIFIED = 0,
+  ASSET_TYPE_UNSPECIFIED,
   /** ASSET_TYPE_CURRENCY - Валюта. */
-  ASSET_TYPE_CURRENCY = 1,
+  ASSET_TYPE_CURRENCY,
   /** ASSET_TYPE_COMMODITY - Товар. */
-  ASSET_TYPE_COMMODITY = 2,
+  ASSET_TYPE_COMMODITY,
   /** ASSET_TYPE_INDEX - Индекс. */
-  ASSET_TYPE_INDEX = 3,
+  ASSET_TYPE_INDEX,
   /** ASSET_TYPE_SECURITY - Ценная бумага. */
-  ASSET_TYPE_SECURITY = 4,
-  UNRECOGNIZED = -1,
+  ASSET_TYPE_SECURITY,
+  UNRECOGNIZED,
 }
 
 /** Тип структурной ноты. */
 export enum StructuredProductType {
   /** SP_TYPE_UNSPECIFIED - Тип не определён. */
-  SP_TYPE_UNSPECIFIED = 0,
+  SP_TYPE_UNSPECIFIED,
   /** SP_TYPE_DELIVERABLE - Поставочный. */
-  SP_TYPE_DELIVERABLE = 1,
+  SP_TYPE_DELIVERABLE,
   /** SP_TYPE_NON_DELIVERABLE - Беспоставочный. */
-  SP_TYPE_NON_DELIVERABLE = 2,
-  UNRECOGNIZED = -1,
+  SP_TYPE_NON_DELIVERABLE,
+  UNRECOGNIZED,
 }
 
 /** Тип действия со списком избранных инструментов. */
 export enum EditFavoritesActionType {
   /** EDIT_FAVORITES_ACTION_TYPE_UNSPECIFIED - Тип не определён. */
-  EDIT_FAVORITES_ACTION_TYPE_UNSPECIFIED = 0,
+  EDIT_FAVORITES_ACTION_TYPE_UNSPECIFIED,
   /** EDIT_FAVORITES_ACTION_TYPE_ADD - Добавить в список. */
-  EDIT_FAVORITES_ACTION_TYPE_ADD = 1,
+  EDIT_FAVORITES_ACTION_TYPE_ADD,
   /** EDIT_FAVORITES_ACTION_TYPE_DEL - Удалить из списка. */
-  EDIT_FAVORITES_ACTION_TYPE_DEL = 2,
-  UNRECOGNIZED = -1,
+  EDIT_FAVORITES_ACTION_TYPE_DEL,
+  UNRECOGNIZED,
 }
 
 /** Реальная площадка исполнения расчётов. */
 export enum RealExchange {
   /** REAL_EXCHANGE_UNSPECIFIED - Тип не определён. */
-  REAL_EXCHANGE_UNSPECIFIED = 0,
+  REAL_EXCHANGE_UNSPECIFIED,
   /** REAL_EXCHANGE_MOEX - Московская биржа. */
-  REAL_EXCHANGE_MOEX = 1,
+  REAL_EXCHANGE_MOEX,
   /** REAL_EXCHANGE_RTS - Санкт-Петербургская биржа. */
-  REAL_EXCHANGE_RTS = 2,
+  REAL_EXCHANGE_RTS,
   /** REAL_EXCHANGE_OTC - Внебиржевой инструмент. */
-  REAL_EXCHANGE_OTC = 3,
-  UNRECOGNIZED = -1,
+  REAL_EXCHANGE_OTC,
+  UNRECOGNIZED,
 }
 
 /** Запрос расписания торгов */
