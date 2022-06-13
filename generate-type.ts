@@ -5,7 +5,7 @@ import path from "path";
 import fsExtra from "fs-extra";
 import { loadEnv } from 'vite'
 
-const env = loadEnv(process.env.NODE_ENV, process.cwd(), '');
+const env = loadEnv(process.env.NODE_ENV ?? "", process.cwd(), '');
 
 const downloadRepoArchive = (url, dest): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -69,7 +69,7 @@ const removeProtoAndFixTs = (fileName: string) => {
             const enumRow = string.match(/\w{1,}( = [-][\d]| = [\d]{1,})/gm);
 
             //cleared enum row: ENUM_DEFENITION = 1
-            string = string.replace(string, enumRow.toString())
+            enumRow && (string = string.replace(string, enumRow.toString()))
 
             //only enum defenition: ENUM_DEFENITION
             const definition = string.replace(/ (.*)/gm, "");
@@ -80,6 +80,7 @@ const removeProtoAndFixTs = (fileName: string) => {
         newContent = newContent.replace('export const protobufPackage = "tinkoff.public.invest.api.contract.v1";', "");
         newContent = newContent.replace('/* eslint-disable */\n', "");
         newContent = newContent.replace('\n\n', '')
+        newContent = newContent.replace('rxjs', '../Observable')
         fsExtra.writeFile(filePath, newContent);
     }
 }

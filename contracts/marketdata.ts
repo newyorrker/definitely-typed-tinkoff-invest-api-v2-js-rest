@@ -3,7 +3,7 @@ import type {
   Ping,
   Quotation,
 } from "../contracts/common";
-import { Observable } from "rxjs";
+import { Observable } from "../Observable";
 
 /** Тип операции со списком подписок. */
 export enum SubscriptionAction {

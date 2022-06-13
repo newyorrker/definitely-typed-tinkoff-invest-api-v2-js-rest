@@ -1,4 +1,4 @@
-import { Observable } from "rxjs";
+import { Observable } from "../Observable";
 import type { Ping, Quotation, MoneyValue } from "../contracts/common";
 
 /** Направление операции */
