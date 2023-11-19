@@ -1,7 +1,7 @@
 import { Observable } from "../Observable";
 import type { Ping, Quotation, MoneyValue } from "../contracts/common";
 
-/** Направление операции */
+/** Направление операции. */
 export enum OrderDirection {
   /** ORDER_DIRECTION_UNSPECIFIED - Значение не указано */
   ORDER_DIRECTION_UNSPECIFIED = "ORDER_DIRECTION_UNSPECIFIED",
@@ -12,7 +12,7 @@ export enum OrderDirection {
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
-/** Тип заявки */
+/** Тип заявки. */
 export enum OrderType {
   /** ORDER_TYPE_UNSPECIFIED - Значение не указано */
   ORDER_TYPE_UNSPECIFIED = "ORDER_TYPE_UNSPECIFIED",
@@ -20,6 +20,8 @@ export enum OrderType {
   ORDER_TYPE_LIMIT = "ORDER_TYPE_LIMIT",
   /** ORDER_TYPE_MARKET - Рыночная */
   ORDER_TYPE_MARKET = "ORDER_TYPE_MARKET",
+  /** ORDER_TYPE_BESTPRICE - Лучшая цена */
+  ORDER_TYPE_BESTPRICE = "ORDER_TYPE_BESTPRICE",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -36,6 +38,17 @@ export enum OrderExecutionReportStatus {
   EXECUTION_REPORT_STATUS_NEW = "EXECUTION_REPORT_STATUS_NEW",
   /** EXECUTION_REPORT_STATUS_PARTIALLYFILL - Частично исполнена */
   EXECUTION_REPORT_STATUS_PARTIALLYFILL = "EXECUTION_REPORT_STATUS_PARTIALLYFILL",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+/** Тип цены. */
+export enum PriceType {
+  /** PRICE_TYPE_UNSPECIFIED - Значение не определено. */
+  PRICE_TYPE_UNSPECIFIED = "PRICE_TYPE_UNSPECIFIED",
+  /** PRICE_TYPE_POINT - Цена в пунктах (только для фьючерсов и облигаций). */
+  PRICE_TYPE_POINT = "PRICE_TYPE_POINT",
+  /** PRICE_TYPE_CURRENCY - Цена в валюте расчётов по инструменту. */
+  PRICE_TYPE_CURRENCY = "PRICE_TYPE_CURRENCY",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -67,25 +80,33 @@ export interface OrderTrades {
   trades: OrderTrade[];
   /** Идентификатор счёта. */
   accountId: string;
+  /** UID идентификатор инструмента. */
+  instrumentUid: string;
 }
 
 /** Информация о сделке. */
 export interface OrderTrade {
   /** Дата и время совершения сделки в часовом поясе UTC. */
   dateTime: Date | undefined;
-  /** Цена одного инструмента, по которой совершена сделка. */
+  /** Цена за 1 инструмент, по которой совершена сделка. */
   price: Quotation | undefined;
-  /** Количество лотов в сделке. */
+  /** Количество штук в сделке. */
   quantity: number;
+  /** Идентификатор сделки. */
+  tradeId: string;
 }
 
 /** Запрос выставления торгового поручения. */
 export interface PostOrderRequest {
-  /** Figi-идентификатор инструмента. */
+  /**
+   * Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
+   *
+   * @deprecated
+   */
   figi: string;
   /** Количество лотов. */
   quantity: number;
-  /** Цена одного инструмента. Для получения стоимости лота требуется умножить на лотность инструмента. Игнорируется для рыночных поручений. */
+  /** Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. Игнорируется для рыночных поручений. */
   price: Quotation | undefined;
   /** Направление операции. */
   direction: OrderDirection;
@@ -93,13 +114,15 @@ export interface PostOrderRequest {
   accountId: string;
   /** Тип заявки. */
   orderType: OrderType;
-  /** Идентификатор запроса выставления поручения для целей идемпотентности. Максимальная длина 36 символов. */
+  /** Идентификатор запроса выставления поручения для целей идемпотентности в формате UID. Максимальная длина 36 символов. */
   orderId: string;
+  /** Идентификатор инструмента, принимает значения Figi или Instrument_uid. */
+  instrumentId: string;
 }
 
 /** Информация о выставлении поручения. */
 export interface PostOrderResponse {
-  /** Идентификатор заявки. */
+  /** Биржевой идентификатор заявки. */
   orderId: string;
   /** Текущий статус заявки. */
   executionReportStatus: OrderExecutionReportStatus;
@@ -109,7 +132,7 @@ export interface PostOrderResponse {
   lotsExecuted: number;
   /** Начальная цена заявки. Произведение количества запрошенных лотов на цену. */
   initialOrderPrice: MoneyValue | undefined;
-  /** Исполненная цена заявки. Произведение средней цены покупки на количество лотов. */
+  /** Исполненная средняя цена 1 одного инструмента в заявки. */
   executedOrderPrice: MoneyValue | undefined;
   /** Итоговая стоимость заявки, включающая все комиссии. */
   totalOrderAmount: MoneyValue | undefined;
@@ -131,6 +154,8 @@ export interface PostOrderResponse {
   message: string;
   /** Начальная цена заявки в пунктах (для фьючерсов). */
   initialOrderPricePt: Quotation | undefined;
+  /** UID идентификатор инструмента. */
+  instrumentUid: string;
 }
 
 /** Запрос отмены торгового поручения. */
@@ -169,7 +194,7 @@ export interface GetOrdersResponse {
 
 /** Информация о торговом поручении. */
 export interface OrderState {
-  /** Идентификатор заявки. */
+  /** Биржевой идентификатор заявки. */
   orderId: string;
   /** Текущий статус заявки. */
   executionReportStatus: OrderExecutionReportStatus;
@@ -205,16 +230,36 @@ export interface OrderState {
   orderType: OrderType;
   /** Дата и время выставления заявки в часовом поясе UTC. */
   orderDate: Date | undefined;
+  /** UID идентификатор инструмента. */
+  instrumentUid: string;
+  /** Идентификатор ключа идемпотентности, переданный клиентом, в формате UID. Максимальная длина 36 символов. */
+  orderRequestId: string;
 }
 
 /** Сделки в рамках торгового поручения. */
 export interface OrderStage {
-  /** Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.. */
+  /** Цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
   price: MoneyValue | undefined;
   /** Количество лотов. */
   quantity: number;
-  /** Идентификатор торговой операции. */
+  /** Идентификатор сделки. */
   tradeId: string;
+}
+
+/** Запрос изменения выставленной заявки. */
+export interface ReplaceOrderRequest {
+  /** Номер счета. */
+  accountId: string;
+  /** Идентификатор заявки на бирже. */
+  orderId: string;
+  /** Новый идентификатор запроса выставления поручения для целей идемпотентности. Максимальная длина 36 символов. Перезатирает старый ключ. */
+  idempotencyKey: string;
+  /** Количество лотов. */
+  quantity: number;
+  /** Цена за 1 инструмент. */
+  price: Quotation | undefined;
+  /** Тип цены. */
+  priceType: PriceType;
 }
 
 export interface OrdersStreamService {
@@ -236,4 +281,6 @@ export interface OrdersService {
   GetOrderState(request: GetOrderStateRequest): Promise<OrderState>;
   /** Метод получения списка активных заявок по счёту. */
   GetOrders(request: GetOrdersRequest): Promise<GetOrdersResponse>;
+  /** Метод изменения выставленной заявки. */
+  ReplaceOrder(request: ReplaceOrderRequest): Promise<PostOrderResponse>;
 }

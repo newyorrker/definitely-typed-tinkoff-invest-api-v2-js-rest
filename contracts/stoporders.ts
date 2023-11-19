@@ -37,7 +37,11 @@ export enum StopOrderType {
 
 /** Запрос выставления стоп-заявки. */
 export interface PostStopOrderRequest {
-  /** Figi-идентификатор инструмента. */
+  /**
+   * Deprecated Figi-идентификатор инструмента. Необходимо использовать instrument_id.
+   *
+   * @deprecated
+   */
   figi: string;
   /** Количество лотов. */
   quantity: number;
@@ -55,6 +59,8 @@ export interface PostStopOrderRequest {
   stopOrderType: StopOrderType;
   /** Дата и время окончания действия стоп-заявки в часовом поясе UTC. **Для ExpirationType = GoodTillDate заполнение обязательно**. */
   expireDate: Date | undefined;
+  /** Идентификатор инструмента, принимает значения Figi или instrument_uid. */
+  instrumentId: string;
 }
 
 /** Результат выставления стоп-заявки. */
@@ -113,6 +119,8 @@ export interface StopOrder {
   price: MoneyValue | undefined;
   /** Цена активации стоп-заявки за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
   stopPrice: MoneyValue | undefined;
+  /** instrument_uid идентификатор инструмента. */
+  instrumentUid: string;
 }
 
 /**
