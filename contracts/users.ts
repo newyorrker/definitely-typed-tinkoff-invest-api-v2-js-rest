@@ -84,6 +84,8 @@ export interface GetMarginAttributesResponse {
   fundsSufficiencyLevel: Quotation | undefined;
   /** Объем недостающих средств. Разница между стартовой маржой и ликвидной стоимости портфеля. */
   amountOfMissingFunds: MoneyValue | undefined;
+  /** Скорректированная маржа.Начальная маржа, в которой плановые позиции рассчитываются с учётом активных заявок на покупку позиций лонг или продажу позиций шорт. */
+  correctedMargin: MoneyValue | undefined;
 }
 
 /** Запрос текущих лимитов пользователя. */
@@ -91,26 +93,28 @@ export interface GetUserTariffRequest {}
 
 /** Текущие лимиты пользователя. */
 export interface GetUserTariffResponse {
-  /** Массив лимитов пользователя по unary-запросам */
+  /** Массив лимитов пользователя по unary-запросам. */
   unaryLimits: UnaryLimit[];
-  /** Массив лимитов пользователей для stream-соединений */
+  /** Массив лимитов пользователей для stream-соединений. */
   streamLimits: StreamLimit[];
 }
 
 /** Лимит unary-методов. */
 export interface UnaryLimit {
-  /** Количество unary-запросов в минуту */
+  /** Количество unary-запросов в минуту. */
   limitPerMinute: number;
-  /** Названия методов */
+  /** Названия методов. */
   methods: string[];
 }
 
 /** Лимит stream-соединений. */
 export interface StreamLimit {
-  /** Максимальное количество stream-соединений */
+  /** Максимальное количество stream-соединений. */
   limit: number;
-  /** Названия stream-методов */
+  /** Названия stream-методов. */
   streams: string[];
+  /** Текущее количество открытых stream-соединений. */
+  open: number;
 }
 
 /** Запрос информации о пользователе. */

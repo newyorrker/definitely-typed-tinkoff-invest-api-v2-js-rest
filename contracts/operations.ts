@@ -1,4 +1,10 @@
-import type { MoneyValue, Quotation } from "../contracts/common";
+import type {
+  InstrumentType,
+  MoneyValue,
+  Quotation,
+  Ping,
+} from "../contracts/common";
+import { Observable } from "../Observable";
 
 /** Статус запрашиваемых операций. */
 export enum OperationState {
@@ -8,6 +14,8 @@ export enum OperationState {
   OPERATION_STATE_EXECUTED = "OPERATION_STATE_EXECUTED",
   /** OPERATION_STATE_CANCELED - Отменена. */
   OPERATION_STATE_CANCELED = "OPERATION_STATE_CANCELED",
+  /** OPERATION_STATE_PROGRESS - Исполняется. */
+  OPERATION_STATE_PROGRESS = "OPERATION_STATE_PROGRESS",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -103,6 +111,66 @@ export enum OperationType {
   OPERATION_TYPE_DIV_EXT = "OPERATION_TYPE_DIV_EXT",
   /** OPERATION_TYPE_TAX_CORRECTION_COUPON - Корректировка налога по купонам. */
   OPERATION_TYPE_TAX_CORRECTION_COUPON = "OPERATION_TYPE_TAX_CORRECTION_COUPON",
+  /** OPERATION_TYPE_CASH_FEE - Комиссия за валютный остаток. */
+  OPERATION_TYPE_CASH_FEE = "OPERATION_TYPE_CASH_FEE",
+  /** OPERATION_TYPE_OUT_FEE - Комиссия за вывод валюты с брокерского счета. */
+  OPERATION_TYPE_OUT_FEE = "OPERATION_TYPE_OUT_FEE",
+  /** OPERATION_TYPE_OUT_STAMP_DUTY - Гербовый сбор. */
+  OPERATION_TYPE_OUT_STAMP_DUTY = "OPERATION_TYPE_OUT_STAMP_DUTY",
+  /** OPERATION_TYPE_OUTPUT_SWIFT - SWIFT-перевод */
+  OPERATION_TYPE_OUTPUT_SWIFT = "OPERATION_TYPE_OUTPUT_SWIFT",
+  /** OPERATION_TYPE_INPUT_SWIFT - SWIFT-перевод */
+  OPERATION_TYPE_INPUT_SWIFT = "OPERATION_TYPE_INPUT_SWIFT",
+  /** OPERATION_TYPE_OUTPUT_ACQUIRING - Перевод на карту */
+  OPERATION_TYPE_OUTPUT_ACQUIRING = "OPERATION_TYPE_OUTPUT_ACQUIRING",
+  /** OPERATION_TYPE_INPUT_ACQUIRING - Перевод с карты */
+  OPERATION_TYPE_INPUT_ACQUIRING = "OPERATION_TYPE_INPUT_ACQUIRING",
+  /** OPERATION_TYPE_OUTPUT_PENALTY - Комиссия за вывод средств */
+  OPERATION_TYPE_OUTPUT_PENALTY = "OPERATION_TYPE_OUTPUT_PENALTY",
+  /** OPERATION_TYPE_ADVICE_FEE - Списание оплаты за сервис Советов */
+  OPERATION_TYPE_ADVICE_FEE = "OPERATION_TYPE_ADVICE_FEE",
+  /** OPERATION_TYPE_TRANS_IIS_BS - Перевод ценных бумаг с ИИС на Брокерский счет */
+  OPERATION_TYPE_TRANS_IIS_BS = "OPERATION_TYPE_TRANS_IIS_BS",
+  /** OPERATION_TYPE_TRANS_BS_BS - Перевод ценных бумаг с одного брокерского счета на другой */
+  OPERATION_TYPE_TRANS_BS_BS = "OPERATION_TYPE_TRANS_BS_BS",
+  /** OPERATION_TYPE_OUT_MULTI - Вывод денежных средств со счета */
+  OPERATION_TYPE_OUT_MULTI = "OPERATION_TYPE_OUT_MULTI",
+  /** OPERATION_TYPE_INP_MULTI - Пополнение денежных средств со счета */
+  OPERATION_TYPE_INP_MULTI = "OPERATION_TYPE_INP_MULTI",
+  /** OPERATION_TYPE_OVER_PLACEMENT - Размещение биржевого овернайта */
+  OPERATION_TYPE_OVER_PLACEMENT = "OPERATION_TYPE_OVER_PLACEMENT",
+  /** OPERATION_TYPE_OVER_COM - Списание комиссии */
+  OPERATION_TYPE_OVER_COM = "OPERATION_TYPE_OVER_COM",
+  /** OPERATION_TYPE_OVER_INCOME - Доход от оверанайта */
+  OPERATION_TYPE_OVER_INCOME = "OPERATION_TYPE_OVER_INCOME",
+  /** OPERATION_TYPE_OPTION_EXPIRATION - Экспирация */
+  OPERATION_TYPE_OPTION_EXPIRATION = "OPERATION_TYPE_OPTION_EXPIRATION",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+/** Результат подписки. */
+export enum PortfolioSubscriptionStatus {
+  /** PORTFOLIO_SUBSCRIPTION_STATUS_UNSPECIFIED - Тип не определён. */
+  PORTFOLIO_SUBSCRIPTION_STATUS_UNSPECIFIED = "PORTFOLIO_SUBSCRIPTION_STATUS_UNSPECIFIED",
+  /** PORTFOLIO_SUBSCRIPTION_STATUS_SUCCESS - Успешно. */
+  PORTFOLIO_SUBSCRIPTION_STATUS_SUCCESS = "PORTFOLIO_SUBSCRIPTION_STATUS_SUCCESS",
+  /** PORTFOLIO_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND - Счёт не найден или недостаточно прав. */
+  PORTFOLIO_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND = "PORTFOLIO_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND",
+  /** PORTFOLIO_SUBSCRIPTION_STATUS_INTERNAL_ERROR - Произошла ошибка. */
+  PORTFOLIO_SUBSCRIPTION_STATUS_INTERNAL_ERROR = "PORTFOLIO_SUBSCRIPTION_STATUS_INTERNAL_ERROR",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+/** Результат подписки. */
+export enum PositionsAccountSubscriptionStatus {
+  /** POSITIONS_SUBSCRIPTION_STATUS_UNSPECIFIED - Тип не определён. */
+  POSITIONS_SUBSCRIPTION_STATUS_UNSPECIFIED = "POSITIONS_SUBSCRIPTION_STATUS_UNSPECIFIED",
+  /** POSITIONS_SUBSCRIPTION_STATUS_SUCCESS - Успешно. */
+  POSITIONS_SUBSCRIPTION_STATUS_SUCCESS = "POSITIONS_SUBSCRIPTION_STATUS_SUCCESS",
+  /** POSITIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND - Счёт не найден или недостаточно прав. */
+  POSITIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND = "POSITIONS_SUBSCRIPTION_STATUS_ACCOUNT_NOT_FOUND",
+  /** POSITIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR - Произошла ошибка. */
+  POSITIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR = "POSITIONS_SUBSCRIPTION_STATUS_INTERNAL_ERROR",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -156,6 +224,12 @@ export interface Operation {
   operationType: OperationType;
   /** Массив сделок. */
   trades: OperationTrade[];
+  /** Идентификатор актива */
+  assetUid: string;
+  /** position_uid-идентификатора инструмента. */
+  positionUid: string;
+  /** Уникальный идентификатор инструмента. */
+  instrumentUid: string;
 }
 
 /** Сделка по операции. */
@@ -174,24 +248,46 @@ export interface OperationTrade {
 export interface PortfolioRequest {
   /** Идентификатор счёта пользователя. */
   accountId: string;
+  /** Валюта, в которой требуется рассчитать портфель */
+  currency: PortfolioRequest_CurrencyRequest;
+}
+
+export enum PortfolioRequest_CurrencyRequest {
+  /** RUB - Рубли */
+  RUB = "RUB",
+  /** USD - Доллары */
+  USD = "USD",
+  /** EUR - Евро */
+  EUR = "EUR",
+  UNRECOGNIZED = "UNRECOGNIZED",
 }
 
 /** Текущий портфель по счёту. */
 export interface PortfolioResponse {
-  /** Общая стоимость акций в портфеле в рублях. */
+  /** Общая стоимость акций в портфеле. */
   totalAmountShares: MoneyValue | undefined;
-  /** Общая стоимость облигаций в портфеле в рублях. */
+  /** Общая стоимость облигаций в портфеле. */
   totalAmountBonds: MoneyValue | undefined;
-  /** Общая стоимость фондов в портфеле в рублях. */
+  /** Общая стоимость фондов в портфеле. */
   totalAmountEtf: MoneyValue | undefined;
-  /** Общая стоимость валют в портфеле в рублях. */
+  /** Общая стоимость валют в портфеле. */
   totalAmountCurrencies: MoneyValue | undefined;
-  /** Общая стоимость фьючерсов в портфеле в рублях. */
+  /** Общая стоимость фьючерсов в портфеле. */
   totalAmountFutures: MoneyValue | undefined;
   /** Текущая относительная доходность портфеля, в %. */
   expectedYield: Quotation | undefined;
   /** Список позиций портфеля. */
   positions: PortfolioPosition[];
+  /** Идентификатор счёта пользователя. */
+  accountId: string;
+  /** Общая стоимость опционов в портфеле. */
+  totalAmountOptions: MoneyValue | undefined;
+  /** Общая стоимость структурных нот в портфеле. */
+  totalAmountSp: MoneyValue | undefined;
+  /** Общая стоимость портфеля. */
+  totalAmountPortfolio: MoneyValue | undefined;
+  /** Массив виртуальных позиций портфеля. */
+  virtualPositions: VirtualPortfolioPosition[];
 }
 
 /** Запрос позиций портфеля по счёту. */
@@ -212,6 +308,8 @@ export interface PositionsResponse {
   limitsLoadingInProgress: boolean;
   /** Список фьючерсов портфеля. */
   futures: PositionsFutures[];
+  /** Список опционов портфеля. */
+  options: PositionsOptions[];
 }
 
 /** Запрос доступного для вывода остатка. */
@@ -244,31 +342,100 @@ export interface PortfolioPosition {
   expectedYield: Quotation | undefined;
   /** Текущий НКД. */
   currentNkd: MoneyValue | undefined;
-  /** Средняя цена лота в позиции в пунктах (для фьючерсов). **Возможна задержка до секунды для пересчёта**. */
+  /**
+   * Deprecated Средняя цена позиции в пунктах (для фьючерсов). **Возможна задержка до секунды для пересчёта**.
+   *
+   * @deprecated
+   */
   averagePositionPricePt: Quotation | undefined;
-  /** Текущая цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента.. */
+  /** Текущая цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
   currentPrice: MoneyValue | undefined;
-  /** Средняя цена лота в позиции по методу FIFO. **Возможна задержка до секунды для пересчёта**. */
+  /** Средняя цена позиции по методу FIFO. **Возможна задержка до секунды для пересчёта**. */
   averagePositionPriceFifo: MoneyValue | undefined;
-  /** Количество лотов в портфеле. */
+  /**
+   * Deprecated Количество лотов в портфеле.
+   *
+   * @deprecated
+   */
   quantityLots: Quotation | undefined;
+  /** Заблокировано на бирже. */
+  blocked: boolean;
+  /** Количество бумаг, заблокированных выставленными заявками. */
+  blockedLots: Quotation | undefined;
+  /** position_uid-идентификатора инструмента */
+  positionUid: string;
+  /** instrument_uid-идентификатора инструмента */
+  instrumentUid: string;
+  /** Вариационная маржа */
+  varMargin: MoneyValue | undefined;
+  /** Текущая рассчитанная доходность позиции. */
+  expectedYieldFifo: Quotation | undefined;
+}
+
+export interface VirtualPortfolioPosition {
+  /** position_uid-идентификатора инструмента */
+  positionUid: string;
+  /** instrument_uid-идентификатора инструмента */
+  instrumentUid: string;
+  /** Figi-идентификатора инструмента. */
+  figi: string;
+  /** Тип инструмента. */
+  instrumentType: string;
+  /** Количество инструмента в портфеле в штуках. */
+  quantity: Quotation | undefined;
+  /** Средневзвешенная цена позиции. **Возможна задержка до секунды для пересчёта**. */
+  averagePositionPrice: MoneyValue | undefined;
+  /** Текущая рассчитанная доходность позиции. */
+  expectedYield: Quotation | undefined;
+  /** Текущая рассчитанная доходность позиции. */
+  expectedYieldFifo: Quotation | undefined;
+  /** Дата до которой нужно продать виртуальные бумаги, после этой даты виртуальная позиция "сгорит" */
+  expireDate: Date | undefined;
+  /** Текущая цена за 1 инструмент. Для получения стоимости лота требуется умножить на лотность инструмента. */
+  currentPrice: MoneyValue | undefined;
+  /** Средняя цена позиции по методу FIFO. **Возможна задержка до секунды для пересчёта**. */
+  averagePositionPriceFifo: MoneyValue | undefined;
 }
 
 /** Баланс позиции ценной бумаги. */
 export interface PositionsSecurities {
   /** Figi-идентификатор бумаги. */
   figi: string;
-  /** Заблокировано. */
+  /** Количество бумаг заблокированных выставленными заявками. */
   blocked: number;
   /** Текущий незаблокированный баланс. */
   balance: number;
+  /** Уникальный идентификатор позиции. */
+  positionUid: string;
+  /** Уникальный идентификатор  инструмента. */
+  instrumentUid: string;
+  /** Заблокировано на бирже. */
+  exchangeBlocked: boolean;
+  /** Тип инструмента. */
+  instrumentType: string;
 }
 
 /** Баланс фьючерса. */
 export interface PositionsFutures {
   /** Figi-идентификатор фьючерса. */
   figi: string;
-  /** Заблокировано. */
+  /** Количество бумаг заблокированных выставленными заявками. */
+  blocked: number;
+  /** Текущий незаблокированный баланс. */
+  balance: number;
+  /** Уникальный идентификатор позиции. */
+  positionUid: string;
+  /** Уникальный идентификатор  инструмента. */
+  instrumentUid: string;
+}
+
+/** Баланс опциона. */
+export interface PositionsOptions {
+  /** Уникальный идентификатор позиции опциона. */
+  positionUid: string;
+  /** Уникальный идентификатор  инструмента. */
+  instrumentUid: string;
+  /** Количество бумаг заблокированных выставленными заявками. */
   blocked: number;
   /** Текущий незаблокированный баланс. */
   balance: number;
@@ -452,13 +619,215 @@ export interface DividendsForeignIssuerReport {
   currency: string;
 }
 
+/** Запрос установки stream-соединения. */
+export interface PortfolioStreamRequest {
+  /** Массив идентификаторов счётов пользователя */
+  accounts: string[];
+}
+
+/** Информация по позициям и доходностям портфелей. */
+export interface PortfolioStreamResponse {
+  /** Объект результата подписки. */
+  subscriptions: PortfolioSubscriptionResult | undefined;
+  /** Объект стриминга портфеля. */
+  portfolio: PortfolioResponse | undefined;
+  /** Проверка активности стрима. */
+  ping: Ping | undefined;
+}
+
+/** Объект результата подписки. */
+export interface PortfolioSubscriptionResult {
+  /** Массив счетов клиента. */
+  accounts: AccountSubscriptionStatus[];
+}
+
+/** Счет клиента. */
+export interface AccountSubscriptionStatus {
+  /** Идентификатор счёта */
+  accountId: string;
+  /** Результат подписки. */
+  subscriptionStatus: PortfolioSubscriptionStatus;
+}
+
+/** Запрос списка операций по счёту с пагинацией. */
+export interface GetOperationsByCursorRequest {
+  /** Идентификатор счёта клиента. Обязательный параметр для данного метода, остальные параметры опциональны. */
+  accountId: string;
+  /** Идентификатор инструмента (Figi инструмента или uid инструмента) */
+  instrumentId: string;
+  /** Начало периода (по UTC). */
+  from: Date | undefined;
+  /** Окончание периода (по UTC). */
+  to: Date | undefined;
+  /** Идентификатор элемента, с которого начать формировать ответ. */
+  cursor: string;
+  /** Лимит количества операций. По умолчанию устанавливается значение **100**, максимальное значение 1000. */
+  limit: number;
+  /** Тип операции. Принимает значение из списка OperationType. */
+  operationTypes: OperationType[];
+  /** Статус запрашиваемых операций, возможные значения указаны в OperationState. */
+  state: OperationState;
+  /** Флаг возвращать ли комиссии, по умолчанию false */
+  withoutCommissions: boolean;
+  /** Флаг получения ответа без массива сделок. */
+  withoutTrades: boolean;
+  /** Флаг не показывать overnight операций. */
+  withoutOvernights: boolean;
+}
+
+/** Список операций по счёту с пагинацией. */
+export interface GetOperationsByCursorResponse {
+  /** Признак, есть ли следующий элемент. */
+  hasNext: boolean;
+  /** Следующий курсор. */
+  nextCursor: string;
+  /** Список операций. */
+  items: OperationItem[];
+}
+
+/** Данные об операции. */
+export interface OperationItem {
+  /** Курсор. */
+  cursor: string;
+  /** Номер счета клиента. */
+  brokerAccountId: string;
+  /** Идентификатор операции, может меняться с течением времени. */
+  id: string;
+  /** Идентификатор родительской операции, может измениться, если изменился id родительской операции. */
+  parentOperationId: string;
+  /** Название операции. */
+  name: string;
+  /** Дата поручения. */
+  date: Date | undefined;
+  /** Тип операции. */
+  type: OperationType;
+  /** Описание операции. */
+  description: string;
+  /** Статус поручения. */
+  state: OperationState;
+  /** Уникальный идентификатор инструмента. */
+  instrumentUid: string;
+  /** Figi. */
+  figi: string;
+  /** Тип инструмента. */
+  instrumentType: string;
+  /** Тип инструмента. */
+  instrumentKind: InstrumentType;
+  /** position_uid-идентификатора инструмента. */
+  positionUid: string;
+  /** Сумма операции. */
+  payment: MoneyValue | undefined;
+  /** Цена операции за 1 инструмент. */
+  price: MoneyValue | undefined;
+  /** Комиссия. */
+  commission: MoneyValue | undefined;
+  /** Доходность. */
+  yield: MoneyValue | undefined;
+  /** Относительная доходность. */
+  yieldRelative: Quotation | undefined;
+  /** Накопленный купонный доход. */
+  accruedInt: MoneyValue | undefined;
+  /** Количество единиц инструмента. */
+  quantity: number;
+  /** Неисполненный остаток по сделке. */
+  quantityRest: number;
+  /** Исполненный остаток. */
+  quantityDone: number;
+  /** Дата и время снятия заявки. */
+  cancelDateTime: Date | undefined;
+  /** Причина отмены операции. */
+  cancelReason: string;
+  /** Массив сделок. */
+  tradesInfo: OperationItemTrades | undefined;
+  /** Идентификатор актива */
+  assetUid: string;
+}
+
+/** Массив с информацией о сделках. */
+export interface OperationItemTrades {
+  trades: OperationItemTrade[];
+}
+
+/** Сделка по операции. */
+export interface OperationItemTrade {
+  /** Номер сделки */
+  num: string;
+  /** Дата сделки */
+  date: Date | undefined;
+  /** Количество в единицах. */
+  quantity: number;
+  /** Цена. */
+  price: MoneyValue | undefined;
+  /** Доходность. */
+  yield: MoneyValue | undefined;
+  /** Относительная доходность. */
+  yieldRelative: Quotation | undefined;
+}
+
+/** Запрос установки stream-соединения позиций. */
+export interface PositionsStreamRequest {
+  /** Массив идентификаторов счётов пользователя */
+  accounts: string[];
+}
+
+/** Информация по изменению позиций портфеля. */
+export interface PositionsStreamResponse {
+  /** Объект результата подписки. */
+  subscriptions: PositionsSubscriptionResult | undefined;
+  /** Объект стриминга позиций. */
+  position: PositionData | undefined;
+  /** Проверка активности стрима. */
+  ping: Ping | undefined;
+}
+
+/** Объект результата подписки. */
+export interface PositionsSubscriptionResult {
+  /** Массив счетов клиента. */
+  accounts: PositionsSubscriptionStatus[];
+}
+
+/** Счет клиента. */
+export interface PositionsSubscriptionStatus {
+  /** Идентификатор счёта */
+  accountId: string;
+  /** Результат подписки. */
+  subscriptionStatus: PositionsAccountSubscriptionStatus;
+}
+
+/** Данные о позиции портфеля. */
+export interface PositionData {
+  /** Идентификатор счёта. */
+  accountId: string;
+  /** Массив валютных позиций портфеля. */
+  money: PositionsMoney[];
+  /** Список ценно-бумажных позиций портфеля. */
+  securities: PositionsSecurities[];
+  /** Список фьючерсов портфеля. */
+  futures: PositionsFutures[];
+  /** Список опционов портфеля. */
+  options: PositionsOptions[];
+  /** Дата и время операции в формате UTC. */
+  date: Date | undefined;
+}
+
+/** Валютная позиция портфеля. */
+export interface PositionsMoney {
+  /** Доступное количество валютный позиций. */
+  availableValue: MoneyValue | undefined;
+  /** Заблокированное количество валютный позиций. */
+  blockedValue: MoneyValue | undefined;
+}
+
 /**
  * Сервис предназначен для получения:</br> **1**.  списка операций по счёту;</br> **2**.
  * портфеля по счёту;</br> **3**. позиций ценных бумаг на счёте;</br> **4**.
- * доступного остатка для вывода средств;</br> **4**. получения различных отчётов.
+ * доступного остатка для вывода средств;</br> **5**. получения различных отчётов.
  */
 export interface OperationsService {
-  /** Метод получения списка операций по счёту. */
+  /**
+   * Метод получения списка операций по счёту.При работе с данным методом необходимо учитывать
+   * [особенности взаимодействия](/investAPI/operations_problems) с данным методом.
+   */
   GetOperations(request: OperationsRequest): Promise<OperationsResponse>;
   /** Метод получения портфеля по счёту. */
   GetPortfolio(request: PortfolioRequest): Promise<PortfolioResponse>;
@@ -474,4 +843,22 @@ export interface OperationsService {
   GetDividendsForeignIssuer(
     request: GetDividendsForeignIssuerRequest
   ): Promise<GetDividendsForeignIssuerResponse>;
+  /**
+   * Метод получения списка операций по счёту с пагинацией. При работе с данным методом необходимо учитывать
+   * [особенности взаимодействия](/investAPI/operations_problems) с данным методом.
+   */
+  GetOperationsByCursor(
+    request: GetOperationsByCursorRequest
+  ): Promise<GetOperationsByCursorResponse>;
+}
+
+export interface OperationsStreamService {
+  /** Server-side stream обновлений портфеля */
+  PortfolioStream(
+    request: PortfolioStreamRequest
+  ): Observable<PortfolioStreamResponse>;
+  /** Server-side stream обновлений информации по изменению позиций портфеля */
+  PositionsStream(
+    request: PositionsStreamRequest
+  ): Observable<PositionsStreamResponse>;
 }

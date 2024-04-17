@@ -86,8 +86,8 @@ const removeProtoAndFixTs = (fileName: string) => {
 }
 
 const API_VERSION = env.API_VERSION;
-const repoArchiveUrl = `https://github.com/Tinkoff/investAPI/archive/refs/heads/release/${API_VERSION}.zip`;
-const BASE_LIB_NAME = `investAPI-release-${API_VERSION}`;
+const repoArchiveUrl = `https://github.com/Tinkoff/investAPI/archive/refs/tags/v${API_VERSION}.zip`;
+const BASE_LIB_NAME = `investAPI-${API_VERSION}`;
 const ARCHIVE_NAME = `${BASE_LIB_NAME}.zip`;
 const ARCHIVE_CONTRACTS_DIR_PATH = getPath(`${BASE_LIB_NAME}/src/docs/contracts`);
 const NEW_CONTRACTS_DIR_PATH = getPath('contracts');

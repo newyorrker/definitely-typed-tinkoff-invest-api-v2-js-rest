@@ -9,6 +9,7 @@ import type {
   CancelOrderResponse,
   OrderState,
   PostOrderRequest,
+  ReplaceOrderRequest,
   GetOrdersRequest,
   CancelOrderRequest,
   GetOrderStateRequest,
@@ -16,10 +17,14 @@ import type {
 import type {
   PositionsResponse,
   OperationsResponse,
+  GetOperationsByCursorResponse,
   PortfolioResponse,
+  WithdrawLimitsResponse,
   PositionsRequest,
   OperationsRequest,
+  GetOperationsByCursorRequest,
   PortfolioRequest,
+  WithdrawLimitsRequest,
 } from "../contracts/operations";
 
 /** Запрос открытия счёта в песочнице. */
@@ -68,18 +73,28 @@ export interface SandboxService {
   ): Promise<CloseSandboxAccountResponse>;
   /** Метод выставления торгового поручения в песочнице. */
   PostSandboxOrder(request: PostOrderRequest): Promise<PostOrderResponse>;
+  /** Метод изменения выставленной заявки. */
+  ReplaceSandboxOrder(request: ReplaceOrderRequest): Promise<PostOrderResponse>;
   /** Метод получения списка активных заявок по счёту в песочнице. */
   GetSandboxOrders(request: GetOrdersRequest): Promise<GetOrdersResponse>;
   /** Метод отмены торгового поручения в песочнице. */
   CancelSandboxOrder(request: CancelOrderRequest): Promise<CancelOrderResponse>;
-  /** Метод получения статуса заявки в песочнице. */
+  /** Метод получения статуса заявки в песочнице. Заявки хранятся в таблице 7 дней. */
   GetSandboxOrderState(request: GetOrderStateRequest): Promise<OrderState>;
   /** Метод получения позиций по виртуальному счёту песочницы. */
   GetSandboxPositions(request: PositionsRequest): Promise<PositionsResponse>;
   /** Метод получения операций в песочнице по номеру счёта. */
   GetSandboxOperations(request: OperationsRequest): Promise<OperationsResponse>;
+  /** Метод получения операций в песочнице по номеру счета с пагинацией. */
+  GetSandboxOperationsByCursor(
+    request: GetOperationsByCursorRequest
+  ): Promise<GetOperationsByCursorResponse>;
   /** Метод получения портфолио в песочнице. */
   GetSandboxPortfolio(request: PortfolioRequest): Promise<PortfolioResponse>;
   /** Метод пополнения счёта в песочнице. */
   SandboxPayIn(request: SandboxPayInRequest): Promise<SandboxPayInResponse>;
+  /** Метод получения доступного остатка для вывода средств в песочнице. */
+  GetSandboxWithdrawLimits(
+    request: WithdrawLimitsRequest
+  ): Promise<WithdrawLimitsResponse>;
 }
